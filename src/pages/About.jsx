@@ -22,7 +22,7 @@ import {
   FileText,
 } from "lucide-react";
 import profileImg from "@/assets/profile/profile.jpg";
-import cvPdf from "@/assets/files/cv_pdf/FaizanAlam_resume1.pdf";
+import cvPdf from "@/assets/files/cv_pdf/FaizanAlam_SDE_resume.pdf";
 
 const corePillars = [
   {
