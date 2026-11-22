@@ -2,13 +2,11 @@ import React, { useState, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PROJECT_CATEGORIES, PROJECTS_DATA } from "@/data/projectsData";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { ProjectGridLines } from "@/components/projects/ProjectGridLines";
 import { ProjectDossierModal } from "@/components/projects/ProjectDossierModal";
 import { ProjectsCommandHUD } from "@/components/projects/ProjectsCommandHUD";
 import {
   Activity,
   Terminal,
-  Compass,
   Layers,
   Sparkles,
   Link2,
@@ -103,7 +101,7 @@ const Projects = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#070a12] text-slate-100 px-4 py-16 sm:px-6 lg:px-10 xl:px-16 selection:bg-sky-500/30 selection:text-sky-200">
+    <div className="relative min-h-screen bg-[#070a12] text-slate-100 px-4 pt-24 pb-16 sm:px-6 lg:px-10 xl:px-16 selection:bg-sky-500/30 selection:text-sky-200">
       {/* Ambient Cyber Grid & Glowing Atmospheric Lights */}
       <div className="pointer-events-none fixed inset-0 -z-10 cyber-grid-bg opacity-40" />
       <div className="pointer-events-none fixed -top-40 left-1/2 -z-10 h-[550px] w-[950px] -translate-x-1/2 rounded-full bg-gradient-to-b from-sky-500/10 via-purple-600/5 to-transparent blur-[140px]" />
@@ -117,41 +115,13 @@ const Projects = () => {
             <span>ENGINEERING COMMAND CENTER // PRODUCTION DEPLOYMENTS</span>
           </div>
 
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-                Systems & <span className="bg-gradient-to-r from-sky-400 via-purple-300 to-amber-300 bg-clip-text text-transparent">Architectures</span>
-              </h1>
-              <p className="mt-3 max-w-2xl text-sm sm:text-base text-slate-400 leading-relaxed font-sans">
-                A dynamic, interconnected engineering grid spanning distributed event queues, multi-agent AI loops, microservices, and high-concurrency SaaS connectors.
-              </p>
-            </div>
-
-            {/* Visual Palette Guide */}
-            <div className="hidden lg:flex flex-col items-end gap-1.5 font-mono text-[11px] text-slate-400">
-              <span className="text-slate-300 font-semibold tracking-wider flex items-center gap-1.5">
-                <Compass className="h-3 w-3 text-amber-400" />
-                SYSTEM PALETTE
-              </span>
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_6px_#fbbf24]" />
-                  Champagne
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                  Emerald
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_6px_#c084fc]" />
-                  Royal Iris
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_6px_#38bdf8]" />
-                  Signal Blue
-                </span>
-              </div>
-            </div>
+          <div className="mt-4">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+              Systems & <span className="bg-gradient-to-r from-sky-400 via-purple-300 to-amber-300 bg-clip-text text-transparent">Architectures</span>
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm sm:text-base text-slate-400 leading-relaxed font-sans">
+              A dynamic, interconnected engineering grid spanning distributed event queues, multi-agent AI loops, microservices, and high-concurrency SaaS connectors.
+            </p>
           </div>
         </div>
 
@@ -206,16 +176,8 @@ const Projects = () => {
           )}
         </AnimatePresence>
 
-        {/* Main Projects Grid with Relative SVG Lines Overlay */}
+        {/* Main Projects Grid */}
         <div ref={containerRef} className="relative w-full">
-          {/* Animated SVG Laser Connections */}
-          <ProjectGridLines
-            activeProjectId={activeProjectId}
-            projects={projects}
-            cardRefs={cardRefs}
-            containerRef={containerRef}
-          />
-
           {/* Responsive CSS Grid with Dense Auto-Placement */}
           <motion.div
             layout
@@ -223,20 +185,14 @@ const Projects = () => {
           >
             {filteredProjects.map((project) => {
               const isActive = project.id === activeProjectId;
-              const isRelated = relatedSet.has(project.id);
-              const isDimmed = activeProjectId && !isActive && !isRelated;
 
               return (
                 <ProjectCard
                   key={project.id}
-                  ref={(el) => {
-                    if (el) cardRefs.current[project.id] = el;
-                    else delete cardRefs.current[project.id];
-                  }}
                   project={project}
                   isActive={isActive}
-                  isRelated={isRelated}
-                  isDimmed={isDimmed}
+                  isRelated={false}
+                  isDimmed={false}
                   onHoverStart={handleHoverStart}
                   onHoverEnd={handleHoverEnd}
                   onClick={handleCardClick}

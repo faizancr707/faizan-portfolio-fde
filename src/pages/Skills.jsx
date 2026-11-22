@@ -2,7 +2,6 @@ import React, { useState, useRef, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SECTORS, SKILLS_DATA } from "@/data/skillsData";
 import { SkillCard } from "@/components/skills/SkillCard";
-import { SudokuGridLines } from "@/components/skills/SudokuGridLines";
 import { SkillDossierModal } from "@/components/skills/SkillDossierModal";
 import { CommandCenterHUD } from "@/components/skills/CommandCenterHUD";
 import {
@@ -13,7 +12,6 @@ import {
   Activity,
   Layers,
   Info,
-  Compass,
 } from "lucide-react";
 
 const Skills = () => {
@@ -117,7 +115,7 @@ const Skills = () => {
   }, [filteredSkills]);
 
   return (
-    <div className="relative min-h-screen bg-[#070a12] text-slate-100 px-4 py-16 sm:px-6 lg:px-10 xl:px-16 selection:bg-sky-500/30 selection:text-sky-200">
+    <div className="relative min-h-screen bg-[#070a12] text-slate-100 px-4 pt-24 pb-16 sm:px-6 lg:px-10 xl:px-16 selection:bg-sky-500/30 selection:text-sky-200">
       {/* Ambient Cyber Grid & Glow Overlays */}
       <div className="pointer-events-none fixed inset-0 -z-10 cyber-grid-bg opacity-40" />
       <div className="pointer-events-none fixed -top-40 left-1/2 -z-10 h-[550px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-b from-sky-500/10 via-purple-600/5 to-transparent blur-[140px]" />
@@ -131,41 +129,13 @@ const Skills = () => {
             <span>SUDOKU TECH MATRIX // VERIFIED CV STACK</span>
           </div>
 
-          <div className="mt-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
-                Developer <span className="bg-gradient-to-r from-sky-400 via-purple-300 to-amber-300 bg-clip-text text-transparent">Command Center</span>
-              </h1>
-              <p className="mt-3 max-w-2xl text-sm sm:text-base text-slate-400 leading-relaxed font-sans">
-                A fully dynamic, interconnected technology grid extracted strictly from my production CV. Hover any node to trace active dependencies or click to inspect real-world implementation specs.
-              </p>
-            </div>
-
-            {/* Matrix Legend Badge */}
-            <div className="hidden lg:flex flex-col items-end gap-1.5 font-mono text-[11px] text-slate-400">
-              <span className="text-slate-300 font-semibold tracking-wider flex items-center gap-1.5">
-                <Compass className="h-3 w-3 text-amber-400" />
-                SYSTEM PALETTE
-              </span>
-              <div className="flex items-center gap-3">
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_6px_#fbbf24]" />
-                  Champagne
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                  Emerald
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-purple-400 shadow-[0_0_6px_#c084fc]" />
-                  Royal Iris
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-sky-400 shadow-[0_0_6px_#38bdf8]" />
-                  Signal Blue
-                </span>
-              </div>
-            </div>
+          <div className="mt-4">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+              Developer <span className="bg-gradient-to-r from-sky-400 via-purple-300 to-amber-300 bg-clip-text text-transparent">Command Center</span>
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm sm:text-base text-slate-400 leading-relaxed font-sans">
+              A fully dynamic, interconnected technology grid extracted strictly from my production CV. Hover any node to trace active dependencies or click to inspect real-world implementation specs.
+            </p>
           </div>
         </div>
 
@@ -222,16 +192,8 @@ const Skills = () => {
           )}
         </AnimatePresence>
 
-        {/* Main Grid Stage with Relative Positioning for SVG Connection Lines */}
+        {/* Main Grid Stage */}
         <div ref={containerRef} className="relative w-full">
-          {/* Animated SVG Laser Connection Lines */}
-          <SudokuGridLines
-            activeSkillId={activeSkillId}
-            skills={skills}
-            cardRefs={cardRefs}
-            containerRef={containerRef}
-          />
-
           {/* Render Mode 1: Sudoku Auto-Matrix */}
           {layoutMode === "matrix" && (
             <motion.div
@@ -240,20 +202,14 @@ const Skills = () => {
             >
               {filteredSkills.map((skill) => {
                 const isActive = skill.id === activeSkillId;
-                const isRelated = relatedSet.has(skill.id);
-                const isDimmed = activeSkillId && !isActive && !isRelated;
 
                 return (
                   <SkillCard
                     key={skill.id}
-                    ref={(el) => {
-                      if (el) cardRefs.current[skill.id] = el;
-                      else delete cardRefs.current[skill.id];
-                    }}
                     skill={skill}
                     isActive={isActive}
-                    isRelated={isRelated}
-                    isDimmed={isDimmed}
+                    isRelated={false}
+                    isDimmed={false}
                     onHoverStart={handleHoverStart}
                     onHoverEnd={handleHoverEnd}
                     onClick={handleCardClick}
@@ -300,20 +256,14 @@ const Skills = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
                     {sector.items.map((skill) => {
                       const isActive = skill.id === activeSkillId;
-                      const isRelated = relatedSet.has(skill.id);
-                      const isDimmed = activeSkillId && !isActive && !isRelated;
 
                       return (
                         <SkillCard
                           key={skill.id}
-                          ref={(el) => {
-                            if (el) cardRefs.current[skill.id] = el;
-                            else delete cardRefs.current[skill.id];
-                          }}
                           skill={skill}
                           isActive={isActive}
-                          isRelated={isRelated}
-                          isDimmed={isDimmed}
+                          isRelated={false}
+                          isDimmed={false}
                           onHoverStart={handleHoverStart}
                           onHoverEnd={handleHoverEnd}
                           onClick={handleCardClick}

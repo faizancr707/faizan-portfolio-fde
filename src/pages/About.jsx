@@ -16,7 +16,6 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
-  Compass,
   MapPin,
   Clock,
   Radio,
